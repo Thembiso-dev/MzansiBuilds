@@ -19,12 +19,11 @@
   "license": "ISC",
   "type": "commonjs",
   "jest": {
-    "testEnvironment": "node",
-    "testMatch": [
-      "**/tests/**/*.test.js"
-    ],
-    "verbose": true
-  },
+  "testEnvironment": "node",
+  "testMatch": ["**/tests/**/*.test.js"],
+  "verbose": true,
+  "setupFiles": ["./jest.setup.js"]
+},
   "dependencies": {
     "@supabase/supabase-js": "^2.102.1",
     "cors": "^2.8.6",
