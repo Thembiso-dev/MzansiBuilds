@@ -77,8 +77,20 @@ app.use('/api/auth', require('./routes/auth'));
 
 // ─── Frontend Routes ──────────────────────────────────────────────────────────
 
+/**
+ * Serves the landing page at the root route.
+ */
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../frontend/html/index.html'));
+});
+
+/**
+ * Serves any HTML page by name from the html folder.
+ * Example: /html/login.html → frontend/html/login.html
+ */
+app.get('/html/:page', (req, res) => {
+  const safePage = path.basename(req.params.page);
+  res.sendFile(path.join(__dirname, `../frontend/html/${safePage}`));
 });
 
 // ─── 404 Handler ─────────────────────────────────────────────────────────────
