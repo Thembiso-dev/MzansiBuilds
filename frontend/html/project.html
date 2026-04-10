@@ -28,6 +28,58 @@
       <div id="project-content" class="hidden"></div>
     </div>
 
+  <!-- Collaborate Section (for non-owners) -->
+<div id="collab-section" class="comments-section">
+  <h2 class="comments-title">🤝 Request Collaboration</h2>
+  <p style="font-size:13px;color:#888;margin-bottom:16px">
+    Interested in working on this project?
+    Send the developer a collaboration request.
+  </p>
+
+  <button
+    id="raise-hand-btn"
+    class="btn-secondary"
+    onclick="showCollabForm()"
+    style="width:auto;padding:10px 24px;margin-bottom:16px">
+    ✋ Raise My Hand
+  </button>
+
+  <div id="collab-form" class="comment-form-box hidden">
+    <div id="collab-alert" class="alert"></div>
+    <div class="form-group">
+      <label for="collab-message">
+        Message to the developer (optional)
+      </label>
+      <textarea
+        id="collab-message"
+        placeholder="Tell them why you want to collaborate and what you bring to the table..."
+        rows="3">
+      </textarea>
+    </div>
+    <div style="display:flex;gap:10px;justify-content:flex-end">
+      <button class="btn-secondary"
+        onclick="showCollabForm()"
+        style="width:auto;padding:10px 24px">
+        Cancel
+      </button>
+      <button class="btn-primary"
+        id="collab-submit-btn"
+        onclick="handleRequestCollaboration()"
+        style="width:auto;padding:10px 24px">
+        Send Request
+      </button>
+    </div>
+  </div>
+</div>
+
+    <!-- Collaboration Requests (for owners) -->
+    <div id="owner-collab-section" class="comments-section hidden">
+      <h2 class="comments-title">🤝 Collaboration Requests</h2>
+      <div id="collaborations-container">
+        <div class="feed-loading">Loading requests...</div>
+      </div>
+    </div>
+
     <!-- Milestones Section -->
     <div class="comments-section">
       <h2 class="comments-title">Milestones</h2>

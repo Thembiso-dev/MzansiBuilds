@@ -81,7 +81,19 @@ const loadProject = async (projectId) => {
 
     // Only show edit/delete if current user owns the project
     const isOwner = user && user.id === project.user_id;
+    // Show correct collaboration section based on ownership
+const collabSection = document.getElementById('collab-section');
+const ownerCollabSection = document.getElementById('owner-collab-section');
 
+if (isOwner) {
+  // Owner sees incoming requests
+  if (collabSection) collabSection.classList.add('hidden');
+  if (ownerCollabSection) ownerCollabSection.classList.remove('hidden');
+} else {
+  // Other developers see the raise hand button
+  if (collabSection) collabSection.classList.remove('hidden');
+  if (ownerCollabSection) ownerCollabSection.classList.add('hidden');
+}
     const ownerActions = isOwner ? `
       <div class="project-owner-actions">
         <button class="btn-edit" onclick="showEditForm()">
@@ -542,6 +554,236 @@ const handlePostComment = async () => {
   } finally {
     btn.disabled = false;
     btn.textContent = 'Post Comment';
+  }
+};
+
+// ─── Load Collaborations ──────────────────────────────────────────────────────
+
+/**
+ * Loads collaboration requests for the project.
+ * Only visible to the project owner.
+ *
+ * @param {string} projectId - Project UUID
+ */
+const loadCollaborations = async (projectId) => {
+  const container = document.getElementById('collaborations-container');
+  if (!container) return;
+
+  const token = getToken();
+  if (!token) return;
+
+  try {
+    const res = await fetch(`${API_URL}/collaborations/${projectId}`, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+
+    if (!res.ok) {
+      container.innerHTML = `
+        <div class="no-comments">Could not load requests.</div>
+      `;
+      return;
+    }
+
+    const collabs = await res.json();
+    console.log('Collaborations loaded:', collabs);
+
+    if (!collabs || collabs.length === 0) {
+      container.innerHTML = `
+        <div class="no-comments">
+          No collaboration requests yet.
+        </div>
+      `;
+      return;
+    }
+
+    // Show pending count as a badge
+    const pending = collabs.filter(c => c.status === 'pending').length;
+    const ownerTitle = document.querySelector('#owner-collab-section .comments-title');
+    if (ownerTitle) {
+      ownerTitle.innerHTML = pending > 0
+        ? `🤝 Collaboration Requests <span class="pending-badge">${pending} pending</span>`
+        : '🤝 Collaboration Requests';
+    }
+
+    container.innerHTML = collabs.map(renderCollabRequest).join('');
+
+  } catch (err) {
+    console.error('Load collaborations error:', err);
+    container.innerHTML = `
+      <div class="no-comments">Failed to load requests.</div>
+    `;
+  }
+};
+// ─── Render Collaboration Request ─────────────────────────────────────────────
+
+/**
+ * Renders a single collaboration request card.
+ * Shows accept/decline buttons for pending requests.
+ *
+ * @param {object} collab - Collaboration object from API
+ * @returns {string} HTML string
+ */
+const renderCollabRequest = (collab) => {
+  const username = collab.profiles?.username || 'Unknown';
+  const initials = username.substring(0, 2).toUpperCase();
+  const time = timeAgo(collab.created_at);
+
+  const statusColors = {
+    pending: '#ff9800',
+    accepted: '#27ae60',
+    declined: '#e74c3c'
+  };
+
+  const color = statusColors[collab.status] || '#888';
+
+  const actions = collab.status === 'pending' ? `
+    <div class="collab-actions">
+      <button class="btn-collab-accept"
+        onclick="handleCollabResponse('${collab.id}', 'accepted')">
+        Accept
+      </button>
+      <button class="btn-collab-decline"
+        onclick="handleCollabResponse('${collab.id}', 'declined')">
+        Decline
+      </button>
+    </div>
+  ` : '';
+
+  return `
+    <div class="collab-card">
+      <div class="comment-avatar">${initials}</div>
+      <div class="comment-body">
+        <div class="comment-author">
+          ${username}
+          <span class="comment-time">${time}</span>
+          <span class="collab-status" style="color:${color}">
+            ${collab.status}
+          </span>
+        </div>
+        ${collab.message
+          ? `<div class="comment-content">${collab.message}</div>`
+          : '<div class="comment-content" style="color:#aaa">No message provided</div>'
+        }
+        ${actions}
+      </div>
+    </div>
+  `;
+};
+
+// ─── Handle Collaborate Button ────────────────────────────────────────────────
+
+/**
+ * Shows the collaboration request form.
+ */
+const showCollabForm = () => {
+  const form = document.getElementById('collab-form');
+  if (form) form.classList.toggle('hidden');
+};
+
+// ─── Send Collaboration Request ───────────────────────────────────────────────
+
+/**
+ * Sends a collaboration request to the project owner.
+ */
+const handleRequestCollaboration = async () => {
+  const projectId = getProjectId();
+  const message = document.getElementById('collab-message')?.value?.trim();
+  const btn = document.getElementById('collab-submit-btn');
+  const raiseBtn = document.querySelector('.btn-raise-hand');
+  const token = getToken();
+  const alertEl = document.getElementById('collab-alert');
+
+  if (!token) {
+    alertEl.textContent = 'You must be logged in to request collaboration.';
+    alertEl.className = 'alert error';
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Sending...';
+
+  try {
+    const res = await fetch(`${API_URL}/collaborations`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify({ project_id: projectId, message })
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      alertEl.textContent = data.error || 'Failed to send request.';
+      alertEl.className = 'alert error';
+      return;
+    }
+
+    // Show success state
+    alertEl.textContent = '✅ Hand raised! Your request has been sent to the developer.';
+    alertEl.className = 'alert success';
+
+    document.getElementById('collab-message').value = '';
+
+    // Update raise hand button to show hand raised
+    const raiseHandBtn = document.getElementById('raise-hand-btn');
+    if (raiseHandBtn) {
+      raiseHandBtn.textContent = '✋ Hand Raised';
+      raiseHandBtn.disabled = true;
+      raiseHandBtn.style.background = '#e8f5e9';
+      raiseHandBtn.style.color = '#27ae60';
+      raiseHandBtn.style.borderColor = '#27ae60';
+    }
+
+    // Hide form after success
+    setTimeout(() => {
+      document.getElementById('collab-form').classList.add('hidden');
+    }, 2000);
+
+  } catch (err) {
+    alertEl.textContent = 'Network error. Please try again.';
+    alertEl.className = 'alert error';
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Send Request';
+  }
+};
+
+// ─── Accept / Decline Collaboration ──────────────────────────────────────────
+
+/**
+ * Handles accepting or declining a collaboration request.
+ * Only callable by the project owner.
+ *
+ * @param {string} collabId - Collaboration UUID
+ * @param {string} status - 'accepted' or 'declined'
+ */
+const handleCollabResponse = async (collabId, status) => {
+  const token = getToken();
+
+  try {
+    const res = await fetch(`${API_URL}/collaborations/${collabId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify({ status })
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      alert(data.error || 'Failed to update request.');
+      return;
+    }
+
+    // Reload collaborations to show updated status
+    await loadCollaborations(getProjectId());
+
+  } catch (err) {
+    alert('Network error. Please try again.');
   }
 };
 
