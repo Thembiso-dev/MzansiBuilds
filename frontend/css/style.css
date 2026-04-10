@@ -904,3 +904,208 @@ nav .nav-links a.active {
   font-size: 11px;
   color: var(--gray-mid);
 }
+
+/* ─── Celebration Wall ───────────────────────────────────────────────────────── */
+.celebrate-layout {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 24px;
+  flex: 1;
+}
+
+.celebrate-header {
+  text-align: center;
+  padding: 40px 20px 32px;
+}
+
+.celebrate-trophy {
+  font-size: 56px;
+  margin-bottom: 16px;
+}
+
+.celebrate-header h1 {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--black);
+  margin-bottom: 10px;
+}
+
+.celebrate-header p {
+  font-size: 15px;
+  color: var(--gray-mid);
+  max-width: 420px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+.celebrate-stats {
+  display: flex;
+  justify-content: center;
+  gap: 48px;
+  padding: 24px;
+  background: var(--white);
+  border: 1px solid var(--gray-border);
+  border-radius: 12px;
+  margin-bottom: 24px;
+}
+
+.celebrate-stat {
+  text-align: center;
+}
+
+.celebration-card {
+  background: var(--white);
+  border: 1px solid var(--gray-border);
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 16px;
+  transition: border-color 0.2s;
+}
+
+.celebration-card:hover {
+  border-color: var(--green);
+}
+
+.celebration-accent {
+  height: 4px;
+}
+
+.celebration-body {
+  padding: 20px;
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.celebration-medal {
+  font-size: 28px;
+  flex-shrink: 0;
+}
+
+.celebration-content {
+  flex: 1;
+}
+
+.celebration-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.celebration-avatar {
+  width: 40px;
+  height: 40px;
+  font-size: 14px;
+}
+
+.celebration-username {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--black);
+}
+
+.celebration-date {
+  font-size: 12px;
+  color: var(--gray-mid);
+  margin-top: 2px;
+}
+
+.celebration-project-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--black);
+  margin-bottom: 6px;
+}
+
+.celebration-project-desc {
+  font-size: 13px;
+  color: #555;
+  line-height: 1.6;
+  margin-bottom: 14px;
+}
+
+.celebration-footer {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.celebrate-empty {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--gray-mid);
+}
+
+.celebrate-empty h3 {
+  font-size: 20px;
+  color: var(--black);
+  margin-bottom: 8px;
+}
+
+.celebrate-empty p {
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* ─── Edit Form ──────────────────────────────────────────────────────────────── */
+.project-owner-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.btn-edit {
+  background: transparent;
+  color: var(--black);
+  border: 1.5px solid var(--black);
+  padding: 7px 16px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: var(--font);
+  transition: all 0.2s;
+}
+
+.btn-edit:hover {
+  background: var(--black);
+  color: var(--white);
+}
+
+.btn-delete {
+  background: transparent;
+  color: var(--red);
+  border: 1.5px solid var(--red);
+  padding: 7px 16px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: var(--font);
+  transition: all 0.2s;
+}
+
+.btn-delete:hover {
+  background: var(--red);
+  color: var(--white);
+}
+
+.edit-form {
+  border-top: 1px solid var(--gray-border);
+}
+
+.edit-form.hidden {
+  display: none;
+}
+
+.edit-form-body {
+  padding: 24px;
+}
+
+.edit-form-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--black);
+  margin-bottom: 16px;
+}
