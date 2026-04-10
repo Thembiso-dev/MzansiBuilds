@@ -134,28 +134,27 @@ router.post('/login', async (req, res) => {
       });
     }
 
-    // ── Authenticate with Supabase ──
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email: email.trim().toLowerCase(),
-      password
-    });
+   // ── Authenticate with Supabase ──
+const { data, error } = await supabase.auth.signInWithPassword({
+  email: email.trim().toLowerCase(),
+  password
+});
 
-    if (error) {
-      // Always return 401 for auth failures (never reveal which field is wrong)
-      return res.status(401).json({
-        error: 'Invalid email or password.'
-      });
-    }
+if (error || !data.session) {
+  return res.status(401).json({
+    error: 'Invalid email or password.'
+  });
+}
 
-    return res.status(200).json({
-      message: 'Login successful.',
-      user: {
-        id: data.user.id,
-        email: data.user.email,
-        username: data.user.user_metadata.username
-      },
-      token: data.session.access_token
-    });
+return res.status(200).json({
+  message: 'Login successful.',
+  user: {
+    id: data.user.id,
+    email: data.user.email,
+    username: data.user.user_metadata.username
+  },
+  token: data.session.access_token
+});
 
   } catch (err) {
     console.error('Login error:', err.message);

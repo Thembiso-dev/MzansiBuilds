@@ -331,3 +331,376 @@ footer span {
   nav { padding: 0 16px; }
   .auth-card { padding: 28px 20px; }
 }
+
+/* ─── Dashboard Layout ───────────────────────────────────────────────────────── */
+.dashboard-layout {
+  display: flex;
+  gap: 20px;
+  padding: 24px;
+  max-width: 1100px;
+  margin: 0 auto;
+  width: 100%;
+  flex: 1;
+}
+
+/* ─── Sidebar ────────────────────────────────────────────────────────────────── */
+.sidebar {
+  width: 220px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.sidebar-card {
+  background: var(--white);
+  border: 1px solid var(--gray-border);
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.profile-avatar-lg {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--black);
+  border: 3px solid var(--green);
+  color: var(--green);
+  font-size: 20px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 10px;
+}
+
+.sidebar-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--black);
+  text-align: center;
+}
+
+.sidebar-bio {
+  font-size: 12px;
+  color: var(--gray-mid);
+  text-align: center;
+  margin-top: 4px;
+}
+
+.sidebar-section-title {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--gray-mid);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 10px;
+}
+
+.sidebar-link {
+  display: block;
+  font-size: 13px;
+  color: var(--black);
+  text-decoration: none;
+  padding: 7px 0;
+  border-bottom: 1px solid var(--gray-border);
+  transition: color 0.2s;
+}
+
+.sidebar-link:last-child {
+  border-bottom: none;
+}
+
+.sidebar-link:hover {
+  color: var(--green);
+}
+
+/* ─── Feed Main ──────────────────────────────────────────────────────────────── */
+.feed-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* ─── New Project Box ────────────────────────────────────────────────────────── */
+.new-project-box {
+  background: var(--white);
+  border: 1px solid var(--gray-border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.new-project-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 18px;
+  cursor: pointer;
+  color: var(--gray-mid);
+  font-size: 14px;
+}
+
+.new-project-header:hover {
+  background: var(--gray-light);
+}
+
+.btn-add {
+  background: var(--green);
+  color: var(--white);
+  border: none;
+  padding: 7px 16px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: var(--font);
+}
+
+.project-form {
+  padding: 18px;
+  border-top: 1px solid var(--gray-border);
+}
+
+.project-form.hidden {
+  display: none;
+}
+
+.form-row {
+  display: flex;
+  gap: 14px;
+}
+
+.form-row .form-group {
+  flex: 1;
+}
+
+.form-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  margin-top: 6px;
+}
+
+.form-actions .btn-primary,
+.form-actions .btn-secondary {
+  width: auto;
+  padding: 10px 24px;
+}
+
+/* ─── Feed Tabs ──────────────────────────────────────────────────────────────── */
+.feed-tabs {
+  display: flex;
+  gap: 6px;
+}
+
+.tab {
+  font-size: 13px;
+  padding: 7px 16px;
+  border-radius: 20px;
+  border: 1px solid var(--gray-border);
+  background: var(--white);
+  color: var(--gray-mid);
+  cursor: pointer;
+  font-family: var(--font);
+  transition: all 0.2s;
+}
+
+.tab.active {
+  background: var(--green);
+  color: var(--white);
+  border-color: var(--green);
+  font-weight: 600;
+}
+
+.tab:hover:not(.active) {
+  border-color: var(--green);
+  color: var(--green);
+}
+
+/* ─── Project Cards ──────────────────────────────────────────────────────────── */
+.project-card {
+  background: var(--white);
+  border: 1px solid var(--gray-border);
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 14px;
+  transition: border-color 0.2s;
+}
+
+.project-card:hover {
+  border-color: var(--green);
+}
+
+.card-accent {
+  height: 4px;
+  background: var(--gray-mid);
+}
+
+.card-accent.idea { background: #aaaaaa; }
+.card-accent.in_progress { background: var(--green); }
+.card-accent.completed { background: var(--black); }
+
+.card-body {
+  padding: 16px;
+}
+
+.card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.card-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.card-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--green-light);
+  color: var(--green-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.card-author {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--black);
+}
+
+.card-time {
+  font-size: 11px;
+  color: var(--gray-mid);
+  margin-top: 2px;
+}
+
+.stage-badge {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 20px;
+  flex-shrink: 0;
+}
+
+.stage-badge.idea {
+  background: #f5f5f5;
+  color: #555;
+}
+
+.stage-badge.in_progress {
+  background: var(--green-light);
+  color: var(--green-dark);
+}
+
+.stage-badge.completed {
+  background: var(--black);
+  color: var(--white);
+}
+
+.card-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--black);
+  margin-bottom: 6px;
+}
+
+.card-desc {
+  font-size: 13px;
+  color: #555;
+  line-height: 1.6;
+  margin-bottom: 10px;
+}
+
+.card-support {
+  display: inline-block;
+  font-size: 11px;
+  padding: 3px 10px;
+  border-radius: 20px;
+  background: #fff3e0;
+  color: #e65100;
+  margin-bottom: 12px;
+}
+
+.card-footer {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding-top: 12px;
+  border-top: 1px solid var(--gray-border);
+}
+
+.card-action {
+  font-size: 12px;
+  color: var(--gray-mid);
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: var(--font);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0;
+  transition: color 0.2s;
+}
+
+.card-action:hover {
+  color: var(--green);
+}
+
+.card-action-time {
+  font-size: 11px;
+  color: var(--gray-mid);
+  margin-left: auto;
+}
+
+/* ─── Feed States ────────────────────────────────────────────────────────────── */
+.feed-loading {
+  text-align: center;
+  padding: 40px;
+  color: var(--gray-mid);
+  font-size: 14px;
+}
+
+.feed-empty {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--gray-mid);
+}
+
+.feed-empty h3 {
+  font-size: 18px;
+  margin-bottom: 8px;
+  color: var(--black);
+}
+
+/* ─── Nav Active Link ────────────────────────────────────────────────────────── */
+nav .nav-links a.active {
+  color: var(--green);
+  font-weight: 600;
+}
+
+/* ─── Responsive Dashboard ───────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .dashboard-layout {
+    flex-direction: column;
+    padding: 16px;
+  }
+
+  .sidebar {
+    width: 100%;
+  }
+
+  .form-row {
+    flex-direction: column;
+  }
+}
