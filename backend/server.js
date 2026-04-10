@@ -72,7 +72,7 @@ app.get('/api/health', (req, res) => {
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/projects', require('./routes/projects'));
 app.use('/api/comments', require('./routes/comments'));
-// app.use('/api/milestones', require('./routes/milestones'));
+app.use('/api/milestones', require('./routes/milestones'));
 // app.use('/api/celebrate', require('./routes/celebrate'));
 
 // ─── Frontend Routes ──────────────────────────────────────────────────────────
