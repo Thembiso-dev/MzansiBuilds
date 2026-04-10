@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Project — MzansiBuilds</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+
+  <nav>
+    <a href="/" class="logo">Mzansi<span>Builds</span></a>
+    <div class="nav-links">
+      <a href="/html/dashboard.html">Feed</a>
+      <a href="/html/profile.html">Profile</a>
+      <a href="/html/celebrate.html">Celebrate</a>
+      <button class="btn-nav" onclick="handleLogout()">Logout</button>
+    </div>
+  </nav>
+
+  <div class="project-detail-layout">
+
+    <!-- Project Detail -->
+    <div class="project-detail-card">
+      <div id="project-loading" class="feed-loading">
+        Loading project...
+      </div>
+      <div id="project-content" class="hidden"></div>
+    </div>
+
+    <!-- Comments Section -->
+    <div class="comments-section">
+      <h2 class="comments-title">Comments</h2>
+
+      <!-- Add Comment Form -->
+      <div class="comment-form-box">
+        <div id="comment-alert" class="alert"></div>
+        <div class="form-group">
+          <textarea
+            id="comment-input"
+            placeholder="Share your thoughts or feedback..."
+            rows="3">
+          </textarea>
+        </div>
+        <div style="text-align:right">
+          <button class="btn-primary"
+            id="comment-btn"
+            onclick="handlePostComment()"
+            style="width:auto;padding:10px 24px">
+            Post Comment
+          </button>
+        </div>
+      </div>
+
+      <!-- Comments List -->
+      <div id="comments-container">
+        <div class="feed-loading">Loading comments...</div>
+      </div>
+    </div>
+
+  </div>
+
+  <footer>
+    Built with love by <span>Mzansi developers</span> for developers everywhere.
+  </footer>
+
+  <script src="/js/auth.js"></script>
+  <script src="/js/projectDetail.js"></script>
+
+</body>
+</html>
