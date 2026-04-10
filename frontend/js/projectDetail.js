@@ -227,6 +227,120 @@ const handlePostComment = async () => {
   }
 };
 
+// ─── Load Milestones ──────────────────────────────────────────────────────────
+
+/**
+ * Loads and renders milestones for the project.
+ *
+ * @param {string} projectId - Project UUID
+ */
+const loadMilestones = async (projectId) => {
+  try {
+    const res = await fetch(`${API_URL}/milestones/${projectId}`);
+    const milestones = await res.json();
+
+    const container = document.getElementById('milestones-container');
+    if (!container) return;
+
+    if (!milestones || milestones.length === 0) {
+      container.innerHTML = `
+        <div class="no-comments">No milestones yet.</div>
+      `;
+      return;
+    }
+
+    container.innerHTML = milestones.map(renderMilestone).join('');
+
+  } catch (err) {
+    console.error('Load milestones error:', err);
+  }
+};
+
+// ─── Render Milestone ─────────────────────────────────────────────────────────
+
+/**
+ * Renders a single milestone as HTML.
+ *
+ * @param {object} milestone - Milestone object from API
+ * @returns {string} HTML string
+ */
+const renderMilestone = (milestone) => {
+  const time = timeAgo(milestone.achieved_at);
+  return `
+    <div class="milestone-card">
+      <div class="milestone-dot"></div>
+      <div class="milestone-body">
+        <div class="milestone-title">${milestone.title}</div>
+        ${milestone.description
+          ? `<div class="milestone-desc">${milestone.description}</div>`
+          : ''}
+        <div class="milestone-time">${time}</div>
+      </div>
+    </div>
+  `;
+};
+
+// ─── Post Milestone ───────────────────────────────────────────────────────────
+
+/**
+ * Handles milestone form submission.
+ * Validates input, posts to API, refreshes milestones on success.
+ */
+const handlePostMilestone = async () => {
+  const projectId = getProjectId();
+  const title = document.getElementById('milestone-title')?.value?.trim();
+  const description = document.getElementById('milestone-desc')?.value?.trim();
+  const btn = document.getElementById('milestone-btn');
+  const token = getToken();
+  const alertEl = document.getElementById('milestone-alert');
+
+  if (!title || title.length < 3) {
+    alertEl.textContent = 'Milestone title must be at least 3 characters.';
+    alertEl.className = 'alert error';
+    return;
+  }
+
+  if (!token) {
+    alertEl.textContent = 'You must be logged in to add a milestone.';
+    alertEl.className = 'alert error';
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Adding...';
+
+  try {
+    const res = await fetch(`${API_URL}/milestones`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify({ project_id: projectId, title, description })
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      alertEl.textContent = data.error || 'Failed to add milestone.';
+      alertEl.className = 'alert error';
+      return;
+    }
+
+    document.getElementById('milestone-title').value = '';
+    document.getElementById('milestone-desc').value = '';
+    alertEl.className = 'alert';
+    await loadMilestones(projectId);
+
+  } catch (err) {
+    alertEl.textContent = 'Network error. Please try again.';
+    alertEl.className = 'alert error';
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Add Milestone';
+  }
+};
+
 // ─── Init ─────────────────────────────────────────────────────────────────────
 
 /**
@@ -243,6 +357,7 @@ const initProjectDetail = async () => {
   }
 
   await loadProject(projectId);
+  await loadMilestones(projectId);
   await loadComments(projectId);
 };
 
