@@ -81,16 +81,20 @@ const loadProject = async (projectId) => {
 
     // Only show edit/delete if current user owns the project
     const isOwner = user && user.id === project.user_id;
-    // Show correct collaboration section based on ownership
+
+  // Show correct collaboration section based on ownership
+// Show correct collaboration section based on ownership
 const collabSection = document.getElementById('collab-section');
 const ownerCollabSection = document.getElementById('owner-collab-section');
 
 if (isOwner) {
-  // Owner sees incoming requests
   if (collabSection) collabSection.classList.add('hidden');
-  if (ownerCollabSection) ownerCollabSection.classList.remove('hidden');
+  if (ownerCollabSection) {
+    ownerCollabSection.classList.remove('hidden');
+    // Load collaborations immediately after showing the section
+    loadCollaborations(project.id);
+  }
 } else {
-  // Other developers see the raise hand button
   if (collabSection) collabSection.classList.remove('hidden');
   if (ownerCollabSection) ownerCollabSection.classList.add('hidden');
 }
@@ -567,45 +571,58 @@ const handlePostComment = async () => {
  */
 const loadCollaborations = async (projectId) => {
   const container = document.getElementById('collaborations-container');
-  if (!container) return;
+  if (!container) {
+    console.log('No collaborations container found');
+    return;
+  }
 
   const token = getToken();
+  console.log('Token for collab request:', token ? 'exists' : 'MISSING');
+
   if (!token) return;
 
   try {
-    const res = await fetch(`${API_URL}/collaborations/${projectId}`, {
+    const url = `${API_URL}/collaborations/${projectId}`;
+    console.log('Fetching collaborations from:', url);
+
+    const res = await fetch(url, {
       headers: { 'Authorization': `Bearer ${token}` }
     });
 
+    console.log('Collaboration response status:', res.status);
+
+    const collabs = await res.json();
+    console.log('Collaborations data:', collabs);
+
     if (!res.ok) {
+      console.error('Collab fetch failed:', collabs);
       container.innerHTML = `
-        <div class="no-comments">Could not load requests.</div>
+        <div class="no-comments">Could not load requests: ${collabs.error}</div>
       `;
       return;
     }
-
-    const collabs = await res.json();
-    console.log('Collaborations loaded:', collabs);
 
     if (!collabs || collabs.length === 0) {
       container.innerHTML = `
-        <div class="no-comments">
-          No collaboration requests yet.
-        </div>
+        <div class="no-comments">No collaboration requests yet.</div>
       `;
       return;
     }
 
-    // Show pending count as a badge
+    // Show pending count
     const pending = collabs.filter(c => c.status === 'pending').length;
-    const ownerTitle = document.querySelector('#owner-collab-section .comments-title');
-    if (ownerTitle) {
-      ownerTitle.innerHTML = pending > 0
-        ? `🤝 Collaboration Requests <span class="pending-badge">${pending} pending</span>`
-        : '🤝 Collaboration Requests';
+    const ownerTitle = document.querySelector(
+      '#owner-collab-section .comments-title'
+    );
+    if (ownerTitle && pending > 0) {
+      ownerTitle.innerHTML = `
+        🤝 Collaboration Requests
+        <span class="pending-badge">${pending} pending</span>
+      `;
     }
 
     container.innerHTML = collabs.map(renderCollabRequest).join('');
+    console.log('Collaborations rendered successfully');
 
   } catch (err) {
     console.error('Load collaborations error:', err);
