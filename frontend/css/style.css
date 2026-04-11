@@ -1181,3 +1181,142 @@ nav .nav-links a.active {
   margin-left: 8px;
   vertical-align: middle;
 }
+/* ─── Profile Page ───────────────────────────────────────────────────────────── */
+.profile-layout {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  flex: 1;
+}
+
+.profile-card {
+  background: var(--white);
+  border: 1px solid var(--gray-border);
+  border-radius: 12px;
+  padding: 28px;
+}
+
+.profile-card-header {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.profile-avatar-xl {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: var(--black);
+  border: 3px solid var(--green);
+  color: var(--green);
+  font-size: 26px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.profile-card-name {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--black);
+}
+
+.profile-card-email {
+  font-size: 13px;
+  color: var(--gray-mid);
+  margin-top: 4px;
+}
+
+.profile-card-joined {
+  font-size: 12px;
+  color: var(--gray-mid);
+  margin-top: 2px;
+}
+
+.profile-bio-display {
+  font-size: 14px;
+  color: #555;
+  line-height: 1.7;
+  padding: 14px 0;
+  border-top: 1px solid var(--gray-border);
+  border-bottom: 1px solid var(--gray-border);
+  margin-bottom: 14px;
+}
+
+.profile-skills-display {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.skill-tag {
+  background: var(--green-light);
+  color: var(--green-dark);
+  font-size: 12px;
+  font-weight: 500;
+  padding: 4px 12px;
+  border-radius: 20px;
+  border: 1px solid #c8e6c9;
+}
+
+.profile-edit-card {
+  background: var(--white);
+  border: 1px solid var(--gray-border);
+  border-radius: 12px;
+  padding: 28px;
+}
+
+.profile-edit-card.hidden {
+  display: none;
+}
+
+/* ─── My Projects on Profile ─────────────────────────────────────────────────── */
+.profile-projects-card {
+  background: var(--white);
+  border: 1px solid var(--gray-border);
+  border-radius: 12px;
+  padding: 24px;
+}
+
+.my-project-card {
+  border: 1px solid var(--gray-border);
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 12px;
+  transition: border-color 0.2s;
+}
+
+.my-project-card:hover {
+  border-color: var(--green);
+}
+
+.my-project-body {
+  padding: 14px;
+}
+
+.my-project-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.my-project-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--black);
+}
+
+.my-project-desc {
+  font-size: 13px;
+  color: #555;
+  line-height: 1.5;
+  margin-bottom: 10px;
+}
