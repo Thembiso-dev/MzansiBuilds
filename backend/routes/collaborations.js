@@ -17,30 +17,45 @@ const authMiddleware = require('../middleware/authMiddleware');
 
 /**
  * Get all collaboration requests for a project.
- * Only the project owner should see these.
+ * Manually fetches profile for each requester to avoid
+ * foreign key ambiguity with Supabase join.
  *
  * @route GET /api/collaborations/:projectId
  * @access Protected
- * @param {string} req.params.projectId - Project UUID
- * @returns {Array} array of collaboration requests
+ * @returns {Array} array of collaboration requests with requester info
  */
 router.get('/:projectId', authMiddleware, async (req, res) => {
   try {
-    const { data, error } = await supabase
+    // Step 1 — Get all collaboration requests for this project
+    const { data: collabs, error } = await supabase
       .from('collaborations')
-      .select(`
-        *,
-        profiles (
-          username,
-          avatar_url
-        )
-      `)
+      .select('*')
       .eq('project_id', req.params.projectId)
       .order('created_at', { ascending: false });
 
     if (error) throw error;
 
-    return res.status(200).json(data || []);
+    if (!collabs || collabs.length === 0) {
+      return res.status(200).json([]);
+    }
+
+    // Step 2 — Get profile for each requester separately
+    const collabsWithProfiles = await Promise.all(
+      collabs.map(async (collab) => {
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('username, avatar_url')
+          .eq('id', collab.requester_id)
+          .single();
+
+        return {
+          ...collab,
+          profiles: profile || { username: 'Unknown', avatar_url: '' }
+        };
+      })
+    );
+
+    return res.status(200).json(collabsWithProfiles);
 
   } catch (err) {
     console.error('Get collaborations error:', err.message);
@@ -49,6 +64,7 @@ router.get('/:projectId', authMiddleware, async (req, res) => {
     });
   }
 });
+
 // ─── POST Create Collaboration Request (Protected) ────────────────────────────
 
 /**
@@ -111,18 +127,22 @@ router.post('/', authMiddleware, async (req, res) => {
         message: message?.trim() || '',
         status: 'pending'
       })
-      .select(`
-        *,
-        profiles!collaborations_requester_id_fkey (
-          username,
-          avatar_url
-        )
-      `)
+      .select('*')
       .single();
 
     if (error) throw error;
 
-    return res.status(201).json(data);
+    // Fetch the requester profile separately
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('username, avatar_url')
+      .eq('id', req.user.id)
+      .single();
+
+    return res.status(201).json({
+      ...data,
+      profiles: profile || { username: 'Unknown', avatar_url: '' }
+    });
 
   } catch (err) {
     console.error('Create collaboration error:', err.message);
@@ -155,13 +175,10 @@ router.put('/:id', authMiddleware, async (req, res) => {
       });
     }
 
-    // Get the collaboration request with project info
+    // Get the collaboration with project info
     const { data: collab, error: collabError } = await supabase
       .from('collaborations')
-      .select(`
-        *,
-        projects (user_id)
-      `)
+      .select('*, projects(user_id)')
       .eq('id', req.params.id)
       .single();
 
@@ -183,7 +200,7 @@ router.put('/:id', authMiddleware, async (req, res) => {
       .from('collaborations')
       .update({ status })
       .eq('id', req.params.id)
-      .select()
+      .select('*')
       .single();
 
     if (error) throw error;
