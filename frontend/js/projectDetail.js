@@ -84,19 +84,24 @@ const loadProject = async (projectId) => {
 
   // Show correct collaboration section based on ownership
 // Show correct collaboration section based on ownership
+// Show correct collaboration section based on ownership
 const collabSection = document.getElementById('collab-section');
 const ownerCollabSection = document.getElementById('owner-collab-section');
 
 if (isOwner) {
+  // Owner sees incoming requests — hide raise hand button
   if (collabSection) collabSection.classList.add('hidden');
   if (ownerCollabSection) {
     ownerCollabSection.classList.remove('hidden');
-    // Load collaborations immediately after showing the section
     loadCollaborations(project.id);
   }
 } else {
+  // Non-owner sees raise hand button — completely hide owner section
   if (collabSection) collabSection.classList.remove('hidden');
-  if (ownerCollabSection) ownerCollabSection.classList.add('hidden');
+  if (ownerCollabSection) {
+    ownerCollabSection.classList.add('hidden');
+    ownerCollabSection.innerHTML = '';
+  }
 }
     const ownerActions = isOwner ? `
       <div class="project-owner-actions">
