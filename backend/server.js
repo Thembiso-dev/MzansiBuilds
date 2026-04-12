@@ -75,6 +75,8 @@ app.use('/api/comments', require('./routes/comments'));
 app.use('/api/milestones', require('./routes/milestones'));
 app.use('/api/celebrate', require('./routes/celebrate'));
 app.use('/api/collaborations', require('./routes/collaborations'));
+app.use('/api/profile', require('./routes/profile'));
+
 // ─── Frontend Routes ──────────────────────────────────────────────────────────
 
 /**
