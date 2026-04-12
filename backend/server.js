@@ -119,9 +119,13 @@ app.use((err, req, res, next) => {
 
 // ─── Start Server ─────────────────────────────────────────────────────────────
 
-app.listen(PORT, () => {
-  console.log(`✅ MzansiBuilds server running on http://localhost:${PORT}`);
-  console.log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
-});
+// Only start listening if this file is run directly
+// When imported by tests, we just export the app without listening
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`✅ MzansiBuilds server running on http://localhost:${PORT}`);
+    console.log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
+  });
+}
 
 module.exports = app;

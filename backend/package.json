@@ -22,7 +22,14 @@
   "testEnvironment": "node",
   "testMatch": ["**/tests/**/*.test.js"],
   "verbose": true,
-  "setupFiles": ["./jest.setup.js"]
+  "setupFiles": ["./jest.setup.js"],
+  "forceExit": true,
+  "testTimeout": 15000,
+  "collectCoverageFrom": [
+    "routes/auth.js",
+    "routes/celebrate.js",
+    "middleware/authMiddleware.js"
+  ]
 },
   "dependencies": {
     "@supabase/supabase-js": "^2.102.1",
