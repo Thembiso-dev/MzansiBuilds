@@ -1127,10 +1127,8 @@ AI tools, specifically Claude by Anthropic, were used as a development companion
 ## 20. Author
 
 **Developer:** Thembiso Masuvhelele
-**Student Number:** 2543085
 **GitHub:** [github.com/Thembiso-dev/MzansiBuilds](https://github.com/Thembiso-dev/MzansiBuilds)
 **Challenge:** Derivco Code Skills Challenge 2026
-**Institution:** University of the Witwatersrand
 
 ---
 
