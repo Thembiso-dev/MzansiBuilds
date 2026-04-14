@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login — MzansiBuilds</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+
+  <nav>
+    <a href="/" class="logo">Mzansi<span>Builds</span></a>
+    <div class="nav-links">
+      <a href="/html/register.html" class="btn-nav">Register</a>
+    </div>
+  </nav>
+
+  <div class="auth-wrapper">
+    <div class="auth-card">
+      <h1>Welcome back</h1>
+      <p class="subtitle">Login to continue building in public</p>
+
+      <div id="alert-box" class="alert"></div>
+
+      <div class="form-group">
+        <label for="email">Email address</label>
+        <input
+          type="email"
+          id="email"
+          placeholder="you@example.com"
+          autocomplete="email"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input
+          type="password"
+          id="password"
+          placeholder="Your password"
+          autocomplete="current-password"
+        />
+      </div>
+
+      <button class="btn-primary" id="login-btn" onclick="handleLogin()">
+        Login
+      </button>
+
+      <div class="switch-link">
+        Don't have an account?
+        <a href="/html/register.html">Register here</a>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    Built with love by <span>Mzansi developers</span> for developers everywhere.
+  </footer>
+
+  <script src="/js/auth.js"></script>
+
+</body>
+</html>
