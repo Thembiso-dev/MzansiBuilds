@@ -24,9 +24,7 @@ const PORT = process.env.PORT || 5000;
  * Works both locally and in Railway's production container.
  */
 const frontendPath = process.env.FRONTEND_PATH || path.resolve(__dirname, '../frontend');
-console.log('__dirname:', __dirname);
-console.log('frontendPath:', frontendPath);
-console.log('Frontend exists:', require('fs').existsSync(frontendPath));
+
 // ─── Security Middleware (Secure by Design) ───────────────────────────────────
 
 /**
