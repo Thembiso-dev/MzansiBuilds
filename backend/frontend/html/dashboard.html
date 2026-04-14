@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Feed — MzansiBuilds</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+
+  <nav>
+    <a href="/" class="logo">Mzansi<span>Builds</span></a>
+    <div class="nav-links">
+      <a href="/html/dashboard.html" class="active">Feed</a>
+      <a href="/html/profile.html">Profile</a>
+      <a href="/html/celebrate.html">Celebrate</a>
+      <button class="btn-nav" onclick="handleLogout()">Logout</button>
+    </div>
+  </nav>
+
+  <div class="dashboard-layout">
+
+    <!-- LEFT SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sidebar-card" id="profile-summary">
+        <div class="profile-avatar-lg" id="sidebar-avatar">?</div>
+        <div class="sidebar-name" id="sidebar-username">Loading...</div>
+        <div class="sidebar-bio" id="sidebar-bio">Welcome to MzansiBuilds</div>
+      </div>
+
+      <div class="sidebar-card">
+        <div class="sidebar-section-title">Quick Links</div>
+        <a href="/html/profile.html" class="sidebar-link">My Profile</a>
+        <a href="/html/celebrate.html" class="sidebar-link">Celebration Wall</a>
+      </div>
+    </aside>
+
+    <!-- MAIN FEED -->
+    <main class="feed-main">
+
+      <!-- New Project Form -->
+      <div class="new-project-box">
+        <div class="new-project-header" onclick="toggleProjectForm()">
+          <span>Share what you are building...</span>
+          <button class="btn-add">+ New Project</button>
+        </div>
+
+        <div id="project-form" class="project-form hidden">
+          <div id="form-alert" class="alert"></div>
+
+          <div class="form-group">
+            <label for="proj-title">Project Title</label>
+            <input type="text" id="proj-title"
+              placeholder="What are you building?" />
+          </div>
+
+          <div class="form-group">
+            <label for="proj-desc">Description</label>
+            <textarea id="proj-desc"
+              placeholder="Tell the community about your project...">
+            </textarea>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="proj-stage">Stage</label>
+              <select id="proj-stage">
+                <option value="idea">Idea</option>
+                <option value="in_progress">In Progress</option>
+                <option value="completed">Completed</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="proj-support">Support Needed</label>
+              <input type="text" id="proj-support"
+                placeholder="e.g. Design, Backend..." />
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button class="btn-secondary"
+              onclick="toggleProjectForm()">Cancel</button>
+            <button class="btn-primary"
+              id="submit-project-btn"
+              onclick="handleCreateProject()">Post Project</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Feed Tabs -->
+      <div class="feed-tabs">
+        <button class="tab active" onclick="filterFeed('all', this)">
+          All Projects
+        </button>
+        <button class="tab" onclick="filterFeed('in_progress', this)">
+          In Progress
+        </button>
+        <button class="tab" onclick="filterFeed('idea', this)">
+          Ideas
+        </button>
+        <button class="tab" onclick="filterFeed('completed', this)">
+          Completed
+        </button>
+      </div>
+
+      <!-- Feed Container -->
+      <div id="feed-container">
+        <div class="feed-loading">Loading projects...</div>
+      </div>
+
+    </main>
+
+  </div>
+
+  <footer>
+    Built with love by <span>Mzansi developers</span> for developers everywhere.
+  </footer>
+
+  <script src="/js/auth.js"></script>
+  <script src="/js/feed.js"></script>
+  <script src="/js/project.js"></script>
+
+</body>
+</html>
