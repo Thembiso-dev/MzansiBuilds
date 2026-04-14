@@ -17,6 +17,14 @@ const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+// ─── Frontend Path ────────────────────────────────────────────────────────────
+
+/**
+ * Resolves the frontend folder path relative to this file.
+ * Works both locally and in Railway's production container.
+ */
+const frontendPath = path.resolve(__dirname, '../frontend');
+
 // ─── Security Middleware (Secure by Design) ───────────────────────────────────
 
 /**
@@ -46,7 +54,7 @@ app.use(express.json({ limit: '10kb' }));
 app.use(express.urlencoded({ extended: true }));
 
 // Serve frontend static files
-app.use(express.static(path.join(__dirname, '../frontend')));
+app.use(express.static(frontendPath));
 
 // ─── API Routes ───────────────────────────────────────────────────────────────
 
@@ -83,16 +91,18 @@ app.use('/api/profile', require('./routes/profile'));
  * Serves the landing page at the root route.
  */
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, '../frontend/html/index.html'));
+  res.sendFile(path.join(frontendPath, 'html/index.html'));
 });
 
 /**
  * Serves any HTML page by name from the html folder.
+ * Sanitises the page name using path.basename to prevent
+ * directory traversal attacks.
  * Example: /html/login.html → frontend/html/login.html
  */
 app.get('/html/:page', (req, res) => {
   const safePage = path.basename(req.params.page);
-  res.sendFile(path.join(__dirname, `../frontend/html/${safePage}`));
+  res.sendFile(path.join(frontendPath, `html/${safePage}`));
 });
 
 // ─── 404 Handler ─────────────────────────────────────────────────────────────
@@ -119,8 +129,8 @@ app.use((err, req, res, next) => {
 
 // ─── Start Server ─────────────────────────────────────────────────────────────
 
-// Only start listening if this file is run directly
-// When imported by tests, we just export the app without listening
+// Only start listening if this file is run directly.
+// When imported by tests, we just export the app without listening.
 if (require.main === module) {
   app.listen(PORT, () => {
     console.log(`✅ MzansiBuilds server running on http://localhost:${PORT}`);
