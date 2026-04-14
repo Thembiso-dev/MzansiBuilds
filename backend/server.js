@@ -23,7 +23,7 @@ const PORT = process.env.PORT || 5000;
  * Resolves the frontend folder path relative to this file.
  * Works both locally and in Railway's production container.
  */
-const frontendPath = path.resolve(__dirname, '../frontend');
+const frontendPath = process.env.FRONTEND_PATH || path.resolve(__dirname, '../frontend');
 
 // ─── Security Middleware (Secure by Design) ───────────────────────────────────
 
